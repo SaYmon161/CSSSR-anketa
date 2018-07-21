@@ -1,3 +1,8 @@
+include ../header/header
+include ../main/main
+
 mixin page()
 	+b('body').page&attributes(attributes)
-		block
+		.wrapper
+			+header
+			+main

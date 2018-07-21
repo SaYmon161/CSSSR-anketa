@@ -1,0 +1,13 @@
+mixin skill(skill)
+	+b.skill&attributes(attributes)
+		label.skill__label
+			if (skill.know)
+				input(type="checkbox" checked).skill__input
+			else
+				input(type="checkbox").skill__input
+			.skill__custom-check
+			if (skill.name == 'Читаю blog.csssr.ru')
+				span.skill__text Читаю
+					a(href="//blog.csssr.ru" target="_blank") blog.csssr.ru
+			else
+				span.skill__text= skill.name

@@ -1,0 +1,29 @@
+.skill
+	display inline-block
+
+.skill__label
+	display flex
+	align-items baseline
+
+.skill__custom-check
+	margin-right 5px
+	sprite $checkshape
+	position relative
+	&:after
+		content ''
+		sprite $check
+		position absolute
+		top 25%
+		left 65%
+		transform translate(-50%, -50%)
+		display none
+
+.skill__input
+	position absolute
+	left -99999px
+	&:checked + .skill__custom-check:after
+		display block
+
+.skill__text
+	font-size 21px
+	font-weight 700
