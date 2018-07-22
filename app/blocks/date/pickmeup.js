@@ -5,19 +5,19 @@
  * @license 0BSD
  */
 
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
+(function(root, factory) {
+	if (typeof define === "function" && define.amd) {
 		// AMD
 		// noinspection JSUnresolvedFunction
 		define(factory);
-	}else if (typeof exports === 'object') {
+	} else if (typeof exports === "object") {
 		// CommonJS
 		module.exports = factory();
-	}else {
+	} else {
 		// Browser globals
 		root.pickmeup = factory();
 	}
-})(this, function () {
+})(this, function() {
 	/**
 	 * Functions prefixed with `dom_` are simple convenient wrappers for various operations with DOM
 	 */
@@ -31,7 +31,7 @@
 		args = args || [];
 		if (element instanceof Element) {
 			callback.apply(callback, [element].concat(args));
-		}else {
+		} else {
 			var elements, i;
 			elements = element.length;
 			for (i = 0; i < elements; ++i) {
@@ -44,7 +44,7 @@
 	 * @param {(Element|Element[]|NodeList)} element
 	 */
 	function dom_remove(element) {
-		dom_for_collection(element, function (element) {
+		dom_for_collection(element, function(element) {
 			element.parentElement.removeChild(element);
 		});
 	}
@@ -59,7 +59,7 @@
 		var parent = element;
 		do {
 			parent = parent.parentElement;
-		}while (parent && !dom_matches(parent, selector));
+		} while (parent && !dom_matches(parent, selector));
 		return parent;
 	}
 
@@ -130,14 +130,14 @@
 	 * @param {Function}         callback
 	 */
 	function dom_on(target, element, event, callback) {
-		if (event.indexOf(' ') !== -1) {
-			var events = event.split(' '),
+		if (event.indexOf(" ") !== -1) {
+			var events = event.split(" "),
 				events_number = events.length,
 				i;
 			for (i = 0; i < events_number; ++i) {
 				dom_on(target, element, events[i], callback);
 			}
-		}else {
+		} else {
 			target.__pickmeup.events.push([element, event, callback]);
 			element.addEventListener(event, callback);
 		}
@@ -151,13 +151,13 @@
 	 */
 	function dom_off(target, element, event, callback) {
 		var events, events_number, i;
-		if (event && event.indexOf(' ') !== -1) {
-			events = event.split(' ');
+		if (event && event.indexOf(" ") !== -1) {
+			events = event.split(" ");
 			events_number = events.length;
 			for (i = 0; i < events_number; ++i) {
 				dom_off(target, element, events[i], callback);
 			}
-		}else {
+		} else {
 			events = target.__pickmeup.events;
 			events_number = events.length;
 			for (i = 0; i < events_number; ++i) {
@@ -200,11 +200,11 @@
 	 * @return {boolean}
 	 */
 	function dom_dispatch_event(element, event, detail) {
-		var e = document.createEvent('Event');
+		var e = document.createEvent("Event");
 		if (detail) {
 			e.detail = detail;
 		}
-		e.initEvent('pickmeup-' + event, false, true);
+		e.initEvent("pickmeup-" + event, false, true);
 		return element.dispatchEvent(e);
 	}
 
@@ -307,25 +307,25 @@
 		/**
 		 * Remove old content except header navigation
 		 */
-		dom_remove(dom_query_all(root_element, '.pmu-instance > :not(nav)'));
+		dom_remove(dom_query_all(root_element, ".pmu-instance > :not(nav)"));
 		/**
 		 * If several calendars should be shown
 		 */
 		for (var i = 0; i < options.calendars; i++) {
 			local_date = new Date(current_date);
 			reset_time(local_date);
-			instance = dom_query_all(root_element, '.pmu-instance')[i];
-			if (dom_has_class(root_element, 'pmu-view-years')) {
+			instance = dom_query_all(root_element, ".pmu-instance")[i];
+			if (dom_has_class(root_element, "pmu-view-years")) {
 				date_add_years(local_date, (i - current_cal) * 12);
 				header =
 					local_date.getFullYear() -
 					6 +
-					' - ' +
+					" - " +
 					(local_date.getFullYear() + 5);
-			}else if (dom_has_class(root_element, 'pmu-view-months')) {
+			} else if (dom_has_class(root_element, "pmu-view-months")) {
 				date_add_years(local_date, i - current_cal);
 				header = local_date.getFullYear();
-			}else if (dom_has_class(root_element, 'pmu-view-days')) {
+			} else if (dom_has_class(root_element, "pmu-view-days")) {
 				date_add_months(local_date, i - current_cal);
 				header = format_date(
 					local_date,
@@ -340,9 +340,9 @@
 					tmp_date = new Date(local_date);
 					if (options.select_day) {
 						date_add_months(tmp_date, options.calendars - 1);
-					}else if (options.select_month) {
+					} else if (options.select_month) {
 						date_add_years(tmp_date, options.calendars - 1);
-					}else {
+					} else {
 						date_add_years(tmp_date, (options.calendars - 1) * 12);
 					}
 					if (tmp_date > max_date) {
@@ -367,15 +367,15 @@
 					continue;
 				}
 			}
-			dom_query(instance, '.pmu-month').textContent = header;
-			var is_year_selected = function (year) {
+			dom_query(instance, ".pmu-month").textContent = header;
+			var is_year_selected = function(year) {
 				return (
-					(options.mode == 'range' &&
+					(options.mode == "range" &&
 						year >= new Date(actual_date[0]).getFullYear() &&
 						year <= new Date(actual_date[1]).getFullYear()) ||
-					(options.mode == 'multiple' &&
+					(options.mode == "multiple" &&
 						actual_date
-							.reduce(function (prev, current) {
+							.reduce(function(prev, current) {
 								prev.push(new Date(current).getFullYear());
 								return prev;
 							}, [])
@@ -383,13 +383,13 @@
 					new Date(actual_date).getFullYear() == year
 				);
 			};
-			var is_months_selected = function (year, month) {
+			var is_months_selected = function(year, month) {
 				var first_year = new Date(actual_date[0]).getFullYear(),
 					lastyear = new Date(actual_date[1]).getFullYear(),
 					first_month = new Date(actual_date[0]).getMonth(),
 					last_month = new Date(actual_date[1]).getMonth();
 				return (
-					(options.mode == 'range' &&
+					(options.mode == "range" &&
 						((year > first_year && year < lastyear) ||
 							(year > first_year &&
 								year == lastyear &&
@@ -401,23 +401,23 @@
 								year == lastyear &&
 								month >= first_month &&
 								month <= last_month))) ||
-					(options.mode == 'multiple' &&
+					(options.mode == "multiple" &&
 						actual_date
-							.reduce(function (prev, current) {
+							.reduce(function(prev, current) {
 								current = new Date(current);
 								prev.push(
 									current.getFullYear() +
-										'-' +
+										"-" +
 										current.getMonth()
 								);
 								return prev;
 							}, [])
-							.indexOf(year + '-' + month) !== -1) ||
+							.indexOf(year + "-" + month) !== -1) ||
 					(new Date(actual_date).getFullYear() == year &&
 						new Date(actual_date).getMonth() == month)
 				);
 			};
-			(function () {
+			(function() {
 				var years_elements = [],
 					start_from_year = local_date.getFullYear() - 6,
 					min_year = new Date(options.min).getFullYear(),
@@ -427,27 +427,27 @@
 					j;
 				for (j = 0; j < 12; ++j) {
 					year = start_from_year + j;
-					year_element = document.createElement('div');
+					year_element = document.createElement("div");
 					year_element.textContent = year;
 					year_element.__pickmeup_year = year;
 					if (
 						(options.min && year < min_year) ||
 						(options.max && year > max_year)
 					) {
-						dom_add_class(year_element, 'pmu-disabled');
-					}else if (is_year_selected(year)) {
-						dom_add_class(year_element, 'pmu-selected');
+						dom_add_class(year_element, "pmu-disabled");
+					} else if (is_year_selected(year)) {
+						dom_add_class(year_element, "pmu-selected");
 					}
 					years_elements.push(year_element);
 				}
 				instance.appendChild(
 					options.instance_content_template(
 						years_elements,
-						'pmu-years'
+						"pmu-years"
 					)
 				);
 			})();
-			(function () {
+			(function() {
 				var months_elements = [],
 					current_year = local_date.getFullYear(),
 					min_year = new Date(options.min).getFullYear(),
@@ -457,7 +457,7 @@
 					month,
 					month_element;
 				for (month = 0; month < 12; ++month) {
-					month_element = document.createElement('div');
+					month_element = document.createElement("div");
 					month_element.textContent =
 						options.locales[options.locale].monthsShort[month];
 					month_element.__pickmeup_month = month;
@@ -472,20 +472,20 @@
 								(month > max_month &&
 									current_year >= max_year)))
 					) {
-						dom_add_class(month_element, 'pmu-disabled');
-					}else if (is_months_selected(current_year, month)) {
-						dom_add_class(month_element, 'pmu-selected');
+						dom_add_class(month_element, "pmu-disabled");
+					} else if (is_months_selected(current_year, month)) {
+						dom_add_class(month_element, "pmu-selected");
 					}
 					months_elements.push(month_element);
 				}
 				instance.appendChild(
 					options.instance_content_template(
 						months_elements,
-						'pmu-months'
+						"pmu-months"
 					)
 				);
 			})();
-			(function () {
+			(function() {
 				var days_elements = [],
 					current_month = local_date.getMonth(),
 					today = reset_time(new Date()).valueOf(),
@@ -496,24 +496,24 @@
 					disabled,
 					selected;
 				// Correct first day in calendar taking into account the first day of the week (Sunday or Monday)
-				(function () {
+				(function() {
 					local_date.setDate(1);
 					var day = (local_date.getDay() - options.first_day) % 7;
 					date_add_days(local_date, -(day + (day < 0 ? 7 : 0)));
 				})();
 				for (day = 0; day < 42; ++day) {
-					day_element = document.createElement('div');
+					day_element = document.createElement("div");
 					day_element.textContent = local_date.getDate();
 					day_element.__pickmeup_day = local_date.getDate();
 					day_element.__pickmeup_month = local_date.getMonth();
 					day_element.__pickmeup_year = local_date.getFullYear();
 					if (current_month != local_date.getMonth()) {
-						dom_add_class(day_element, 'pmu-not-in-month');
+						dom_add_class(day_element, "pmu-not-in-month");
 					}
 					if (local_date.getDay() == 0) {
-						dom_add_class(day_element, 'pmu-sunday');
-					}else if (local_date.getDay() == 6) {
-						dom_add_class(day_element, 'pmu-saturday');
+						dom_add_class(day_element, "pmu-sunday");
+					} else if (local_date.getDay() == 6) {
+						dom_add_class(day_element, "pmu-saturday");
 					}
 					from_user = options.render(new Date(local_date)) || {};
 					// We only reset time for this value in order to deal with Summer/Winter time, but changing `local_date` itself will break days incrementing
@@ -524,29 +524,29 @@
 					selected =
 						options.date.valueOf() == val ||
 						(options.date instanceof Array &&
-							options.date.reduce(function (prev, date) {
+							options.date.reduce(function(prev, date) {
 								return prev || val === date.valueOf();
 							}, false)) ||
-						(options.mode == 'range' &&
+						(options.mode == "range" &&
 							val >= options.date[0] &&
 							val <= options.date[1]);
 					if (
 						from_user.disabled ||
-						(!('disabled' in from_user) && disabled)
+						(!("disabled" in from_user) && disabled)
 					) {
-						dom_add_class(day_element, 'pmu-disabled');
-					}else if (
+						dom_add_class(day_element, "pmu-disabled");
+					} else if (
 						from_user.selected ||
-						(!('selected' in from_user) && selected)
+						(!("selected" in from_user) && selected)
 					) {
-						dom_add_class(day_element, 'pmu-selected');
+						dom_add_class(day_element, "pmu-selected");
 					}
 					if (val == today) {
-						dom_add_class(day_element, 'pmu-today');
+						dom_add_class(day_element, "pmu-today");
 					}
 					if (from_user.class_name) {
 						from_user.class_name
-							.split(' ')
+							.split(" ")
 							.forEach(
 								dom_add_class.bind(day_element, day_element)
 							);
@@ -556,7 +556,7 @@
 					date_add_days(local_date, 1);
 				}
 				instance.appendChild(
-					options.instance_content_template(days_elements, 'pmu-days')
+					options.instance_content_template(days_elements, "pmu-days")
 				);
 			})();
 		}
@@ -564,21 +564,21 @@
 		shown_date_to.setDate(1);
 		date_add_months(shown_date_to, 1);
 		date_add_days(shown_date_to, -1);
-		var prev = dom_query(root_element, '.pmu-prev'),
-			next = dom_query(root_element, '.pmu-next');
+		var prev = dom_query(root_element, ".pmu-prev"),
+			next = dom_query(root_element, ".pmu-next");
 		if (prev) {
 			prev.style.visibility =
 				options.min && options.min >= shown_date_from
-					? 'hidden'
-					: 'visible';
+					? "hidden"
+					: "visible";
 		}
 		if (next) {
 			next.style.visibility =
 				options.max && options.max <= shown_date_to
-					? 'hidden'
-					: 'visible';
+					? "hidden"
+					: "visible";
 		}
-		dom_dispatch_event(target, 'fill');
+		dom_dispatch_event(target, "fill");
 	}
 
 	function parse_date(date, options) {
@@ -588,9 +588,9 @@
 			i;
 		if (date instanceof Date || date instanceof Number) {
 			return reset_time(new Date(date));
-		}else if (!date) {
+		} else if (!date) {
 			return reset_time(new Date());
-		}else if (date instanceof Array) {
+		} else if (date instanceof Array) {
 			date = date.slice();
 			for (i = 0; i < date.length; ++i) {
 				date[i] = parse_date(date[i], options);
@@ -599,7 +599,7 @@
 		}
 		var splitted_date = date.split(separator);
 		if (splitted_date.length > 1) {
-			splitted_date.forEach(function (element, index, array) {
+			splitted_date.forEach(function(element, index, array) {
 				array[index] = parse_date(element.trim(), options);
 			});
 			return splitted_date;
@@ -611,10 +611,10 @@
 			locale.monthsShort,
 			locale.months
 		);
-		separator = separator.map(function (item) {
-			return '(' + item + ')';
+		separator = separator.map(function(item) {
+			return "(" + item + ")";
 		});
-		separator = new RegExp('[^0-9a-zA-Z' + separator.join('') + ']+');
+		separator = new RegExp("[^0-9a-zA-Z" + separator.join("") + "]+");
 		var parts = date.split(separator),
 			against = format.split(separator),
 			d,
@@ -625,39 +625,39 @@
 			now = new Date();
 		for (i = 0; i < parts.length; i++) {
 			switch (against[i]) {
-				case 'b':
+				case "b":
 					m = locale.monthsShort.indexOf(parts[i]);
 					break;
-				case 'B':
+				case "B":
 					m = locale.months.indexOf(parts[i]);
 					break;
-				case 'd':
-				case 'e':
+				case "d":
+				case "e":
 					d = parseInt(parts[i], 10);
 					break;
-				case 'm':
+				case "m":
 					m = parseInt(parts[i], 10) - 1;
 					break;
-				case 'Y':
-				case 'y':
+				case "Y":
+				case "y":
 					y = parseInt(parts[i], 10);
 					y += y > 100 ? 0 : y < 29 ? 2000 : 1900;
 					break;
-				case 'H':
-				case 'I':
-				case 'k':
-				case 'l':
+				case "H":
+				case "I":
+				case "k":
+				case "l":
 					h = parseInt(parts[i], 10);
 					break;
-				case 'P':
-				case 'p':
+				case "P":
+				case "p":
 					if (/pm/i.test(parts[i]) && h < 12) {
 						h += 12;
-					}else if (/am/i.test(parts[i]) && h >= 12) {
+					} else if (/am/i.test(parts[i]) && h >= 12) {
 						h -= 12;
 					}
 					break;
-				case 'M':
+				case "M":
 					min = parseInt(parts[i], 10);
 					break;
 			}
@@ -695,79 +695,79 @@
 		}
 		var min = date.getMinutes();
 		var sec = date.getSeconds();
-		var parts = format.split(''),
+		var parts = format.split(""),
 			part;
 		for (var i = 0; i < parts.length; i++) {
 			part = parts[i];
 			switch (part) {
-				case 'a':
+				case "a":
 					part = locale.daysShort[w];
 					break;
-				case 'A':
+				case "A":
 					part = locale.days[w];
 					break;
-				case 'b':
+				case "b":
 					part = locale.monthsShort[m];
 					break;
-				case 'B':
+				case "B":
 					part = locale.months[m];
 					break;
-				case 'C':
+				case "C":
 					part = 1 + Math.floor(y / 100);
 					break;
-				case 'd':
-					part = d < 10 ? '0' + d : d;
+				case "d":
+					part = d < 10 ? "0" + d : d;
 					break;
-				case 'e':
+				case "e":
 					part = d;
 					break;
-				case 'H':
-					part = hr < 10 ? '0' + hr : hr;
+				case "H":
+					part = hr < 10 ? "0" + hr : hr;
 					break;
-				case 'I':
-					part = ir < 10 ? '0' + ir : ir;
+				case "I":
+					part = ir < 10 ? "0" + ir : ir;
 					break;
-				case 'j':
-					part = dy < 100 ? (dy < 10 ? '00' + dy : '0' + dy) : dy;
+				case "j":
+					part = dy < 100 ? (dy < 10 ? "00" + dy : "0" + dy) : dy;
 					break;
-				case 'k':
+				case "k":
 					part = hr;
 					break;
-				case 'l':
+				case "l":
 					part = ir;
 					break;
-				case 'm':
-					part = m < 9 ? '0' + (1 + m) : 1 + m;
+				case "m":
+					part = m < 9 ? "0" + (1 + m) : 1 + m;
 					break;
-				case 'M':
-					part = min < 10 ? '0' + min : min;
+				case "M":
+					part = min < 10 ? "0" + min : min;
 					break;
-				case 'p':
-				case 'P':
-					part = pm ? 'PM' : 'AM';
+				case "p":
+				case "P":
+					part = pm ? "PM" : "AM";
 					break;
-				case 's':
+				case "s":
 					part = Math.floor(date.getTime() / 1000);
 					break;
-				case 'S':
-					part = sec < 10 ? '0' + sec : sec;
+				case "S":
+					part = sec < 10 ? "0" + sec : sec;
 					break;
-				case 'u':
+				case "u":
 					part = w + 1;
 					break;
-				case 'w':
+				case "w":
 					part = w;
 					break;
-				case 'y':
-					part = ('' + y).substr(2, 2);
+				case "y":
+					part = ("" + y).substr(2, 2);
 					break;
-				case 'Y':
+				case "Y":
 					part = y;
 					break;
 			}
 			parts[i] = part;
 		}
-		return parts.join('');
+		return parts.join("");
 	}
 
 	/**
@@ -778,10 +778,10 @@
 		var options = target.__pickmeup.options,
 			i;
 		reset_time(new_date);
-		(function () {
+		(function() {
 			var new_value;
 			switch (options.mode) {
-				case 'multiple':
+				case "multiple":
 					new_value = new_date.valueOf();
 					for (i = 0; i < options.date.length; ++i) {
 						if (options.date[i].valueOf() === new_value) {
@@ -791,14 +791,14 @@
 					}
 					options.date.push(new_date);
 					break;
-				case 'range':
+				case "range":
 					if (!options.lastSel) {
 						options.date[0] = new_date;
 					}
 					if (new_date <= options.date[0]) {
 						options.date[1] = options.date[0];
 						options.date[0] = new_date;
-					}else {
+					} else {
 						options.date[1] = new_date;
 					}
 					options.lastSel = !options.lastSel;
@@ -809,18 +809,18 @@
 			}
 		})();
 		var prepared_date = prepare_date(options);
-		if (dom_matches(target, 'input')) {
+		if (dom_matches(target, "input")) {
 			// noinspection JSUndefinedPropertyAssignment
 			target.value =
-				options.mode == 'single'
+				options.mode == "single"
 					? prepared_date.formatted_date
 					: prepared_date.formatted_date.join(options.separator);
 		}
-		dom_dispatch_event(target, 'change', prepared_date);
+		dom_dispatch_event(target, "change", prepared_date);
 		if (
 			!options.flat &&
 			options.hide_on_select &&
-			(options.mode != 'range' || !options.lastSel)
+			(options.mode != "range" || !options.lastSel)
 		) {
 			options.bound.hide();
 		}
@@ -838,88 +838,88 @@
 		 * @type {Element}
 		 */
 		var element = event.target;
-		if (!dom_has_class(element, 'pmu-button')) {
-			element = dom_closest_parent(element, '.pmu-button');
+		if (!dom_has_class(element, "pmu-button")) {
+			element = dom_closest_parent(element, ".pmu-button");
 		}
 		if (
-			!dom_has_class(element, 'pmu-button') ||
-			dom_has_class(element, 'pmu-disabled')
+			!dom_has_class(element, "pmu-button") ||
+			dom_has_class(element, "pmu-disabled")
 		) {
 			return false;
 		}
 		event.preventDefault();
 		event.stopPropagation();
 		var options = target.__pickmeup.options,
-			instance = dom_closest_parent(element, '.pmu-instance'),
+			instance = dom_closest_parent(element, ".pmu-instance"),
 			root = instance.parentElement,
-			instance_index = dom_query_all(root, '.pmu-instance').indexOf(
+			instance_index = dom_query_all(root, ".pmu-instance").indexOf(
 				instance
 			);
-		if (dom_matches(element.parentElement, 'nav')) {
-			if (dom_has_class(element, 'pmu-month')) {
+		if (dom_matches(element.parentElement, "nav")) {
+			if (dom_has_class(element, "pmu-month")) {
 				date_add_months(
 					options.current,
 					instance_index - Math.floor(options.calendars / 2)
 				);
-				if (dom_has_class(root, 'pmu-view-years')) {
+				if (dom_has_class(root, "pmu-view-years")) {
 					// Shift back to current date, otherwise with min value specified may jump on few (tens) years forward
-					if (options.mode != 'single') {
+					if (options.mode != "single") {
 						options.current = new Date(
 							options.date[options.date.length - 1]
 						);
-					}else {
+					} else {
 						options.current = new Date(options.date);
 					}
 					if (options.select_day) {
-						dom_remove_class(root, 'pmu-view-years');
-						dom_add_class(root, 'pmu-view-days');
-					}else if (options.select_month) {
-						dom_remove_class(root, 'pmu-view-years');
-						dom_add_class(root, 'pmu-view-months');
+						dom_remove_class(root, "pmu-view-years");
+						dom_add_class(root, "pmu-view-days");
+					} else if (options.select_month) {
+						dom_remove_class(root, "pmu-view-years");
+						dom_add_class(root, "pmu-view-months");
 					}
-				}else if (dom_has_class(root, 'pmu-view-months')) {
+				} else if (dom_has_class(root, "pmu-view-months")) {
 					if (options.select_year) {
-						dom_remove_class(root, 'pmu-view-months');
-						dom_add_class(root, 'pmu-view-years');
-					}else if (options.select_day) {
-						dom_remove_class(root, 'pmu-view-months');
-						dom_add_class(root, 'pmu-view-days');
+						dom_remove_class(root, "pmu-view-months");
+						dom_add_class(root, "pmu-view-years");
+					} else if (options.select_day) {
+						dom_remove_class(root, "pmu-view-months");
+						dom_add_class(root, "pmu-view-days");
 					}
-				}else if (dom_has_class(root, 'pmu-view-days')) {
+				} else if (dom_has_class(root, "pmu-view-days")) {
 					if (options.select_month) {
-						dom_remove_class(root, 'pmu-view-days');
-						dom_add_class(root, 'pmu-view-months');
-					}else if (options.select_year) {
-						dom_remove_class(root, 'pmu-view-days');
-						dom_add_class(root, 'pmu-view-years');
+						dom_remove_class(root, "pmu-view-days");
+						dom_add_class(root, "pmu-view-months");
+					} else if (options.select_year) {
+						dom_remove_class(root, "pmu-view-days");
+						dom_add_class(root, "pmu-view-years");
 					}
 				}
-			}else {
-				if (dom_has_class(element, 'pmu-prev')) {
+			} else {
+				if (dom_has_class(element, "pmu-prev")) {
 					options.bound.prev(false);
-				}else {
+				} else {
 					options.bound.next(false);
 				}
 			}
-		}else {
-			if (dom_has_class(root, 'pmu-view-years')) {
+		} else {
+			if (dom_has_class(root, "pmu-view-years")) {
 				options.current.setFullYear(element.__pickmeup_year);
 				if (options.select_month) {
-					dom_remove_class(root, 'pmu-view-years');
-					dom_add_class(root, 'pmu-view-months');
-				}else if (options.select_day) {
-					dom_remove_class(root, 'pmu-view-years');
-					dom_add_class(root, 'pmu-view-days');
-				}else {
+					dom_remove_class(root, "pmu-view-years");
+					dom_add_class(root, "pmu-view-months");
+				} else if (options.select_day) {
+					dom_remove_class(root, "pmu-view-years");
+					dom_add_class(root, "pmu-view-days");
+				} else {
 					options.bound.update_date(options.current);
 				}
-			}else if (dom_has_class(root, 'pmu-view-months')) {
+			} else if (dom_has_class(root, "pmu-view-months")) {
 				options.current.setMonth(element.__pickmeup_month);
 				options.current.setFullYear(element.__pickmeup_year);
 				if (options.select_day) {
-					dom_remove_class(root, 'pmu-view-months');
-					dom_add_class(root, 'pmu-view-days');
-				}else {
+					dom_remove_class(root, "pmu-view-months");
+					dom_add_class(root, "pmu-view-days");
+				} else {
 					options.bound.update_date(options.current);
 				}
 				// Move current month to the first place (needed for multiple calendars)
@@ -927,7 +927,7 @@
 					options.current,
 					Math.floor(options.calendars / 2) - instance_index
 				);
-			}else {
+			} else {
 				var new_date = new Date(options.current);
 				new_date.setYear(element.__pickmeup_year);
 				new_date.setMonth(element.__pickmeup_month);
@@ -941,7 +941,7 @@
 
 	function prepare_date(options) {
 		var result;
-		if (options.mode == 'single') {
+		if (options.mode == "single") {
 			result = new Date(options.date);
 			return {
 				formatted_date: format_date(
@@ -951,12 +951,12 @@
 				),
 				date: result
 			};
-		}else {
+		} else {
 			result = {
 				formatted_date: [],
 				date: []
 			};
-			options.date.forEach(function (val) {
+			options.date.forEach(function(val) {
 				var date = new Date(val);
 				result.formatted_date.push(
 					format_date(
@@ -978,7 +978,7 @@
 	function show(target, force) {
 		var root_element = target.__pickmeup.element,
 			value;
-		if (force || dom_has_class(root_element, 'pmu-hidden')) {
+		if (force || dom_has_class(root_element, "pmu-hidden")) {
 			var options = target.__pickmeup.options,
 				position = dom_offset(target),
 				viewport = {
@@ -990,39 +990,39 @@
 				top = position.top,
 				left = position.left;
 			options.bound.fill();
-			if (dom_matches(target, 'input')) {
+			if (dom_matches(target, "input")) {
 				value = target.value;
 				if (value) {
 					options.bound.set_date(value);
 				}
-				dom_on(target, target, 'keydown', function (e) {
+				dom_on(target, target, "keydown", function(e) {
 					if (e.which == 9) {
 						options.bound.hide();
 					}
 				});
 				options.lastSel = false;
 			}
-			if (!dom_dispatch_event(target, 'show')) {
+			if (!dom_dispatch_event(target, "show")) {
 				return;
 			}
 			if (!options.flat) {
-				dom_remove_class(root_element, 'pmu-hidden');
+				dom_remove_class(root_element, "pmu-hidden");
 				if (options.position instanceof Function) {
 					position = options.position.call(target);
 					left = position.left;
 					top = position.top;
-				}else {
+				} else {
 					switch (options.position) {
-						case 'top':
+						case "top":
 							top -= root_element.offsetHeight;
 							break;
-						case 'left':
+						case "left":
 							left -= root_element.offsetWidth;
 							break;
-						case 'right':
+						case "right":
 							left += target.offsetWidth;
 							break;
-						case 'bottom':
+						case "bottom":
 							top += target.offsetHeight;
 							break;
 					}
@@ -1044,19 +1044,19 @@
 					if (left < viewport.l) {
 						left = position.left + target.offsetWidth;
 					}
-					left += 'px';
-					top += 'px';
+					left += "px";
+					top += "px";
 				}
 				root_element.style.left = left;
 				root_element.style.top = top;
-				setTimeout(function () {
+				setTimeout(function() {
 					dom_on(
 						target,
 						document.documentElement,
-						'click',
+						"click",
 						options.bound.hide
 					);
-					dom_on(target, window, 'resize', options.bound.forced_show);
+					dom_on(target, window, "resize", options.bound.forced_show);
 				});
 			}
 		}
@@ -1076,15 +1076,15 @@
 			(event.target != target && // Clicked not on element itself
 				!(root_element.compareDocumentPosition(event.target) & 16)) // And not on its children
 		) {
-			if (dom_dispatch_event(target, 'hide')) {
-				dom_add_class(root_element, 'pmu-hidden');
+			if (dom_dispatch_event(target, "hide")) {
+				dom_add_class(root_element, "pmu-hidden");
 				dom_off(
 					target,
 					document.documentElement,
-					'click',
+					"click",
 					options.bound.hide
 				);
-				dom_off(target, window, 'resize', options.bound.forced_show);
+				dom_off(target, window, "resize", options.bound.forced_show);
 				options.lastSel = false;
 			}
 		}
@@ -1095,8 +1095,8 @@
 	 */
 	function update(target) {
 		var options = target.__pickmeup.options;
-		dom_off(target, document.documentElement, 'click', options.bound.hide);
-		dom_off(target, window, 'resize', options.bound.forced_show);
+		dom_off(target, document.documentElement, "click", options.bound.hide);
+		dom_off(target, window, "resize", options.bound.forced_show);
 		options.bound.forced_show();
 	}
 
@@ -1105,7 +1105,7 @@
 	 */
 	function clear(target) {
 		var options = target.__pickmeup.options;
-		if (options.mode != 'single') {
+		if (options.mode != "single") {
 			options.date = [];
 			options.lastSel = false;
 			options.bound.fill();
@@ -1117,16 +1117,16 @@
 	 * @param {boolean} [fill=true]
 	 */
 	function prev(target, fill) {
-		if (typeof fill == 'undefined') {
+		if (typeof fill == "undefined") {
 			fill = true;
 		}
 		var root_element = target.__pickmeup.element;
 		var options = target.__pickmeup.options;
-		if (dom_has_class(root_element, 'pmu-view-years')) {
+		if (dom_has_class(root_element, "pmu-view-years")) {
 			date_add_years(options.current, -12);
-		}else if (dom_has_class(root_element, 'pmu-view-months')) {
+		} else if (dom_has_class(root_element, "pmu-view-months")) {
 			date_add_years(options.current, -1);
-		}else if (dom_has_class(root_element, 'pmu-view-days')) {
+		} else if (dom_has_class(root_element, "pmu-view-days")) {
 			date_add_months(options.current, -1);
 		}
 		if (fill) {
@@ -1139,16 +1139,16 @@
 	 * @param {boolean} [fill=true]
 	 */
 	function next(target, fill) {
-		if (typeof fill == 'undefined') {
+		if (typeof fill == "undefined") {
 			fill = true;
 		}
 		var root_element = target.__pickmeup.element;
 		var options = target.__pickmeup.options;
-		if (dom_has_class(root_element, 'pmu-view-years')) {
+		if (dom_has_class(root_element, "pmu-view-years")) {
 			date_add_years(options.current, 12);
-		}else if (dom_has_class(root_element, 'pmu-view-months')) {
+		} else if (dom_has_class(root_element, "pmu-view-months")) {
 			date_add_years(options.current, 1);
-		}else if (dom_has_class(root_element, 'pmu-view-days')) {
+		} else if (dom_has_class(root_element, "pmu-view-days")) {
 			date_add_months(options.current, 1);
 		}
 		if (fill) {
@@ -1163,7 +1163,7 @@
 	function get_date(target, formatted) {
 		var options = target.__pickmeup.options,
 			prepared_date = prepare_date(options);
-		if (typeof formatted === 'string') {
+		if (typeof formatted === "string") {
 			var date = prepared_date.date;
 			if (date instanceof Date) {
 				return format_date(
@@ -1171,8 +1171,8 @@
 					formatted,
 					options.locales[options.locale]
 				);
-			}else {
-				return date.map(function (value) {
+			} else {
+				return date.map(function(value) {
 					return format_date(
 						value,
 						formatted,
@@ -1180,8 +1180,8 @@
 					);
 				});
 			}
-		}else {
-			return prepared_date[formatted ? 'formatted_date' : 'date'];
+		} else {
+			return prepared_date[formatted ? "formatted_date" : "date"];
 		}
 	}
 
@@ -1195,18 +1195,18 @@
 			i;
 		if (!(date instanceof Array) || date.length > 0) {
 			options.date = parse_date(date, options);
-			if (options.mode != 'single') {
+			if (options.mode != "single") {
 				if (options.date instanceof Array) {
 					options.date[0] =
 						options.date[0] || parse_date(new Date(), options);
-					if (options.mode == 'range') {
+					if (options.mode == "range") {
 						options.date[1] =
 							options.date[1] ||
 							parse_date(options.date[0], options);
 					}
-				}else {
+				} else {
 					options.date = [options.date];
-					if (options.mode == 'range') {
+					if (options.mode == "range") {
 						options.date.push(parse_date(options.date[0], options));
 					}
 				}
@@ -1217,7 +1217,7 @@
 						options.max
 					);
 				}
-			}else {
+			} else {
 				if (options.date instanceof Array) {
 					options.date = options.date[0];
 				}
@@ -1227,7 +1227,7 @@
 					options.max
 				);
 			}
-		}else {
+		} else {
 			options.date = [];
 		}
 		if (!options.select_day) {
@@ -1235,12 +1235,12 @@
 				for (i = 0; i < options.date.length; ++i) {
 					options.date[i].setDate(1);
 				}
-			}else {
+			} else {
 				options.date.setDate(1);
 			}
 		}
 		// Remove duplicates
-		if (options.mode == 'multiple') {
+		if (options.mode == "multiple") {
 			for (i = 0; i < options.date.length; ++i) {
 				if (options.date.indexOf(options.date[i]) !== i) {
 					options.date.splice(i, 1);
@@ -1250,24 +1250,24 @@
 		}
 		if (current) {
 			options.current = parse_date(current, options);
-		}else {
+		} else {
 			current =
-				options.mode === 'single'
+				options.mode === "single"
 					? options.date
 					: options.date[options.date.length - 1];
 			options.current = current ? new Date(current) : new Date();
 		}
 		options.current.setDate(1);
 		options.bound.fill();
-		if (dom_matches(target, 'input') && options.default_date !== false) {
+		if (dom_matches(target, "input") && options.default_date !== false) {
 			var prepared_date = prepare_date(options),
 				current_value = target.value,
 				new_value =
-					options.mode == 'single'
+					options.mode == "single"
 						? prepared_date.formatted_date
 						: prepared_date.formatted_date.join(options.separator);
 			if (!current_value) {
-				dom_dispatch_event(target, 'change', prepared_date);
+				dom_dispatch_event(target, "change", prepared_date);
 			}
 			if (current_value != new_value) {
 				// noinspection JSUndefinedPropertyAssignment
@@ -1289,7 +1289,7 @@
 	function correct_date_outside_of_limit(date, min, max) {
 		if (min && min > date) {
 			return new Date(min);
-		}else if (max && max < date) {
+		} else if (max && max < date) {
 			return new Date(max);
 		}
 		return date;
@@ -1302,7 +1302,7 @@
 	 * @return {(Object|null)} Object with useful methods on success, `null` otherwise
 	 */
 	function pickmeup_init(target, initial_options) {
-		if (typeof target == 'string') {
+		if (typeof target == "string") {
 			target = document.querySelector(target);
 		}
 		if (!target) {
@@ -1320,23 +1320,23 @@
 						: pickmeup_init.defaults[i];
 			}
 			for (i in options) {
-				option = target.getAttribute('data-pmu-' + i);
+				option = target.getAttribute("data-pmu-" + i);
 				if (option !== null) {
 					options[i] = option;
 				}
 			}
 			// 4 conditional statements in order to account all cases
-			if (options.view == 'days' && !options.select_day) {
-				options.view = 'months';
+			if (options.view == "days" && !options.select_day) {
+				options.view = "months";
 			}
-			if (options.view == 'months' && !options.select_month) {
-				options.view = 'years';
+			if (options.view == "months" && !options.select_month) {
+				options.view = "years";
 			}
-			if (options.view == 'years' && !options.select_year) {
-				options.view = 'days';
+			if (options.view == "years" && !options.select_year) {
+				options.view = "days";
 			}
-			if (options.view == 'days' && !options.select_day) {
-				options.view = 'months';
+			if (options.view == "days" && !options.select_day) {
+				options.view = "months";
 			}
 			options.calendars = Math.max(
 				1,
@@ -1344,7 +1344,7 @@
 			);
 			options.mode = /single|multiple|range/.test(options.mode)
 				? options.mode
-				: 'single';
+				: "single";
 			if (options.min) {
 				options.min = parse_date(options.min, options);
 				if (!options.select_day) {
@@ -1357,7 +1357,7 @@
 					options.max.setDate(1);
 				}
 			}
-			var element = document.createElement('div');
+			var element = document.createElement("div");
 			// noinspection JSUndefinedPropertyAssignment
 			target.__pickmeup = {
 				options,
@@ -1365,7 +1365,7 @@
 				element
 			};
 			element.__pickmeup_target = target;
-			dom_add_class(element, 'pickmeup');
+			dom_add_class(element, "pickmeup");
 			if (options.class_name) {
 				dom_add_class(element, options.class_name);
 			}
@@ -1384,38 +1384,38 @@
 				set_date: set_date.bind(target, target),
 				destroy: destroy.bind(target, target)
 			};
-			dom_add_class(element, 'pmu-view-' + options.view);
+			dom_add_class(element, "pmu-view-" + options.view);
 			var content_template = options.instance_template(options),
-				content = '';
+				content = "";
 			for (i = 0; i < options.calendars; ++i) {
 				content += content_template;
 			}
 			element.innerHTML = content;
-			dom_on(target, element, 'click', options.bound.click);
+			dom_on(target, element, "click", options.bound.click);
 			dom_on(
 				target,
 				element,
-				'onselectstart' in Element.prototype
-					? 'selectstart'
-					: 'mousedown',
-				function (e) {
+				"onselectstart" in Element.prototype
+					? "selectstart"
+					: "mousedown",
+				function(e) {
 					e.preventDefault();
 				}
 			);
 			if (options.flat) {
-				dom_add_class(element, 'pmu-flat');
+				dom_add_class(element, "pmu-flat");
 				target.appendChild(element);
-			}else {
-				dom_add_class(element, 'pmu-hidden');
+			} else {
+				dom_add_class(element, "pmu-hidden");
 				document.body.appendChild(element);
 				dom_on(
 					target,
 					target,
-					'click',
+					"click",
 					show.bind(target, target, false)
 				);
-				dom_on(target, target, 'input', options.bound.update);
-				dom_on(target, target, 'change', options.bound.update);
+				dom_on(target, target, "input", options.bound.update);
+				dom_on(target, target, "change", options.bound.update);
 			}
 			options.bound.set_date(options.date, options.current);
 		}
@@ -1439,64 +1439,64 @@
 		default_date: new Date(),
 		flat: false,
 		first_day: 1,
-		prev: '&#9664;',
-		next: '&#9654;',
-		mode: 'single',
+		prev: "&#9664;",
+		next: "&#9654;",
+		mode: "single",
 		select_year: true,
 		select_month: true,
 		select_day: true,
-		view: 'days',
+		view: "days",
 		calendars: 1,
-		format: 'd-m-Y',
-		title_format: 'B, Y',
-		position: 'bottom',
-		class_name: '',
-		separator: ' - ',
+		format: "d-m-Y",
+		title_format: "B, Y",
+		position: "bottom",
+		class_name: "",
+		separator: " - ",
 		hide_on_select: false,
 		min: null,
 		max: null,
-		render () {},
-		locale: 'en',
+		render() {},
+		locale: "en",
 		locales: {
 			en: {
 				days: [
-					'Sunday',
-					'Monday',
-					'Tuesday',
-					'Wednesday',
-					'Thursday',
-					'Friday',
-					'Saturday'
+					"Sunday",
+					"Monday",
+					"Tuesday",
+					"Wednesday",
+					"Thursday",
+					"Friday",
+					"Saturday"
 				],
-				daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-				daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+				daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+				daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
 				months: [
-					'January',
-					'February',
-					'March',
-					'April',
-					'May',
-					'June',
-					'July',
-					'August',
-					'September',
-					'October',
-					'November',
-					'December'
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+					"August",
+					"September",
+					"October",
+					"November",
+					"December"
 				],
 				monthsShort: [
-					'Jan',
-					'Feb',
-					'Mar',
-					'Apr',
-					'May',
-					'Jun',
-					'Jul',
-					'Aug',
-					'Sep',
-					'Oct',
-					'Nov',
-					'Dec'
+					"Jan",
+					"Feb",
+					"Mar",
+					"Apr",
+					"May",
+					"Jun",
+					"Jul",
+					"Aug",
+					"Sep",
+					"Oct",
+					"Nov",
+					"Dec"
 				]
 			}
 		},
@@ -1505,7 +1505,7 @@
 		 *
 		 * @returns {string}
 		 */
-		instance_template (options) {
+		instance_template(options) {
 			var days_of_week = options.locales[options.locale].daysMin.slice();
 			// If Monday is the first day of the week
 			if (options.first_day) {
@@ -1513,19 +1513,19 @@
 			}
 			return (
 				'<div class="pmu-instance">' +
-				'<nav>' +
+				"<nav>" +
 				'<div class="pmu-prev pmu-button">' +
 				options.prev +
-				'</div>' +
+				"</div>" +
 				'<div class="pmu-month pmu-button"></div>' +
 				'<div class="pmu-next pmu-button">' +
 				options.next +
-				'</div>' +
-				'</nav>' +
+				"</div>" +
+				"</nav>" +
 				'<nav class="pmu-day-of-week"><div>' +
-				days_of_week.join('</div><div>') +
-				'</div></nav>' +
-				'</div>'
+				days_of_week.join("</div><div>") +
+				"</div></nav>" +
+				"</div>"
 			);
 		},
 		/**
@@ -1534,11 +1534,11 @@
 		 *
 		 * @returns {Element}
 		 */
-		instance_content_template (elements, container_class_name) {
-			var root_element = document.createElement('div');
+		instance_content_template(elements, container_class_name) {
+			var root_element = document.createElement("div");
 			dom_add_class(root_element, container_class_name);
 			for (var i = 0; i < elements.length; ++i) {
-				dom_add_class(elements[i], 'pmu-button');
+				dom_add_class(elements[i], "pmu-button");
 				root_element.appendChild(elements[i]);
 			}
 			return root_element;
