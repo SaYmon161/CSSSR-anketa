@@ -3,6 +3,7 @@ include ../skill/skill
 include ../slider/slider
 include ../plan/plan
 include ../textarea/textarea
+include ../date/date
 
 - var	info = [{name: 'Полное ФИО', value: 'Марат Фаридович Сайфутдинов'},	{name: 'Год рождения', value: '1987'},	{name: 'Место жительства',	value: 'г.Ростов-на-Дону, Россия'},	{name: 'Скайп',	value: 'saymon.01'}, {name: 'Почта', value: 'mfsayfutdinov@gmail.com'}]
 - var skills = [{name: 'БЭМ/OOCSS', know: true}, {name: 'Pug (Jade)', know: true}, {name: 'Stylus/LESS/SASS', know: true}, {name: 'Работаю с SVG', know: true}, {name: 'Верстаю семантично', know: true}, {name: 'Accessibility (A11Y)', know: false}, {name: 'ES2015/ES2016', know: true}, {name: 'Gulp/GRUNT', know: true}, {name: 'Webpack', know: true}, {name: 'Дружу с WebGL', know: false}, {name: 'jQuery', know: true}, {name: 'Знаю/изучаю Angular', know: false}, {name: 'Знаю/изучаю React', know: true}, {name: 'Знаю/изучаю Node.js', know: true}, {name: 'Использую Git', know: true}, {name: 'С глазомером всё ок', know: true}, {name: 'Читаю blog.csssr.ru', know: false}, {name: 'Я ленивый(-ая)', know: true}, {name: 'У меня хороший английский', know: true}]
@@ -14,17 +15,19 @@ mixin main()
 			.main__title
 				img.main__title-pic(src="./images/title.png")
 			.main__info
-				each item in info
-					+info-row(item)
+				ul.main__info-list
+					each item in info
+						li.main__info-item
+							+info-row(item)
 			.main__skills
-					h3.main__subtitle Расскажите о себе чекбоксами
-					p.main__desc Отметьте чекбоксами пункты, которые соответствуют вашим скиллам.
-						| Кстати, отсутствие опыта не означает, что у вас меньше шансов стать одним из наших товарищей.
-						| Это означает, что вы будете получать те задачи, с которыми гарантировано будете справляться.
-					ul.main__skills-list
-						each item in skills
-							li.main__skills-item
-								+skill(item)
+				h3.main__subtitle Расскажите о себе чекбоксами
+				p.main__desc Отметьте чекбоксами пункты, которые соответствуют вашим скиллам.
+					| Кстати, отсутствие опыта не означает, что у вас меньше шансов стать одним из наших товарищей.
+					| Это означает, что вы будете получать те задачи, с которыми гарантировано будете справляться.
+				ul.main__skills-list
+					each item in skills
+						li.main__skills-item
+							+skill(item)
 			.main__slider
 				h3.main__subtitle Уровень владения JavaScript
 				+slider
@@ -36,5 +39,9 @@ mixin main()
 			.main__plans
 				h3.main__subtitle Какие у вас планы на будущее?
 				p.main__desc Этот ответ ни на что не повлияет. Не беда, если в будущем ваши планы поменяются.
-				each item in plans
-					+plan(item)
+				ul.main__plans-list
+					each item in plans
+						li.main__plans-item
+							+plan(item)
+			.main__date
+				+date

@@ -1,7 +1,9 @@
 import svg4everybody from 'svg4everybody';
 import $ from 'jquery';
+import autosize from 'autosize';
+import '../blocks/date/date';
 
-console.log(1);
+autosize($('.textarea'));
 
 $(() => {
 	svg4everybody();

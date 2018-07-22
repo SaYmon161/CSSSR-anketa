@@ -2,5 +2,4 @@ mixin info-row(data)
 	+b.info-row&attributes(attributes)
 		label.info-row__label
 			span.info-row__text= data.name
-			input(type="text", value=data.value).info-row__input
-
+			input.info-row__input(type="text", value=data.value)

@@ -1,2 +1,31 @@
 .plan
 	display block
+
+.plan__label
+	display flex
+	align-items center
+
+.plan-custom-radio
+	position relative
+	margin-right 7px
+	width 26px
+	height 26px
+	sprite $outer
+	&:after
+		content ''
+		sprite $inner
+		position absolute
+		top 50%
+		left 50%
+		transform translate(-50%, -50%)
+		display none
+
+.plan__input
+	position absolute
+	left -99999px
+	&:checked + .plan-custom-radio:after
+		display block
+
+.plan__text
+	font-size 20px
+	font-weight 700

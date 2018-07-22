@@ -1,14 +1,25 @@
-import $ from 'jquery';
+// import $ from 'jquery';
 
-const textareaResize = function () {
-	const textarea = $('.textarea');
-	const initialHeight = 90;
+// autosize($('.textarea'));
 
-	const resize = () => {
-		textarea.css({height: `${initialHeight}px`});
-	};
+// // const textareaResize = function () {
+// // 	const textarea = $('.textarea');
+// // 	const initialHeight = 170;
 
-	resize();
-};
+// // 	const resize = function () {
+// // 		console.log(1);
+// // 		textarea.height(`${initialHeight}px`);
+// // 		textarea.scrollTop(textarea.scrollHeight);
 
-export default textareaResize;
+// // 		var scrollHeight = textarea.scrollTop() + textarea.height();
+// // 		console.log(height);
+
+// // 		textarea.height(`${height + initialHeight}px`);
+// // 	};
+
+// // 	resize();
+
+// // 	textarea.on('input', resize());
+// // };
+
+// export default textareaResize;

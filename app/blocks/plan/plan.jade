@@ -1,5 +1,9 @@
 mixin plan(name)
 	+b.plan&attributes(attributes)
 		label.plan__label
-			input(type="radio", name="plan")
+			if (name === 'Прокачиваться в JS')
+				input.plan__input(type="radio", name="plan" checked)
+			else
+				input.plan__input(type="radio", name="plan")
+			.plan-custom-radio
 			span.plan__text= name

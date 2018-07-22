@@ -1,0 +1,57 @@
+.date
+	display block
+
+.date__label
+	display flex
+	justify-content stretch
+	align-items center
+
+.date__text
+	margin-right 15px
+	padding-top 20px
+	font-size 22.5px
+	font-weight 700
+
+.date__input
+	padding 0 19px
+	height 55px
+	font-family 'Courier New'
+	font-size 30px
+	line-height 1.83333333
+	background url('../../images/textarea-line.png') bottom no-repeat
+	background-color transparent
+	border none
+
+.date__input::-ms-clear
+	display none
+
+.pickmeup 
+	font-family 'Courier New'
+	font-size 21px
+	background url('../../images/anketa-bg.jpg')
+	-webkit-box-shadow 2px 4px 24px 1px rgba(0, 0, 0, .75)
+	-moz-box-shadow 2px 4px 24px 1px rgba(0, 0, 0, .75)
+	box-shadow 2px 4px 24px 1px rgba(0, 0, 0, .75)
+
+.pickmeup .pmu-instance
+	.pmu-button
+		color black
+	.pmu-not-in-month
+		color grey
+	.pmu-day-of-week
+		font-weight 700
+		color black
+	.pmu-sunday
+		font-weight 700
+		color red
+	.pmu-saturday
+		font-weight 700
+		color red
+	.pmu-today
+		background-color #cccccc
+	.pmu-selected
+		background-color transparent
+		border 1px solid #000
+	.pmu-not-in-month.pmu-sunday, .pmu-not-in-month.pmu-saturday
+		color grey
+		
