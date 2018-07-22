@@ -1,10 +1,12 @@
+import $ from 'jquery';
+
 const pointer = $('.slider__pointer');
 const slider = $('.slider');
 let currentPos = 0;
 const sliderLeftOffset = slider.offset().left;
 let dragging = false;
-let points = $('.slider__item');
-let pointsPositions = [];
+const points = $('.slider__item');
+const pointsPositions = [];
 
 points.each((i, el) => {
 	pointsPositions.push($(el).offset().left - sliderLeftOffset);
@@ -27,20 +29,29 @@ pointer.mousedown(() => {
 $('.wrapper')
 	.mousemove(e => {
 		if (dragging) {
-			if (currentPos >= -8.5 && currentPos <= slider.width()) {
-				currentPos = e.pageX - sliderLeftOffset;
-				pointer.css({
-					left: `${currentPos}px`
-				});
-			}else return;
+			currentPos = e.pageX - sliderLeftOffset;
+			pointer.css({
+				left: `${currentPos}px`
+			});
+		}
+		if (currentPos < 0) {
+			currentPos = 0;
+			pointer.css({
+				left: `${currentPos}px`
+			});
+		}
+		if (currentPos > 770) {
+			currentPos = slider.width();
+			pointer.css({
+				left: `${currentPos}px`
+			});
 		}
 	})
-	.mouseup(e => {
+	.mouseup(() => {
 		dragging = false;
 		console.log(currentPos);
 
-		$.each(pointsPositions, (i, el) => {
-			console.log(pointsPositions[i]);
+		$.each(pointsPositions, i => {
 			if (
 				currentPos <= pointsPositions[i + 1] &&
 				currentPos >= pointsPositions[i]
