@@ -1,74 +1,75 @@
 import $ from 'jquery';
 
-const pointer = $('.slider__pointer');
-const slider = $('.slider');
-let currentPos = 0;
-const sliderLeftOffset = slider.offset().left;
-let dragging = false;
-const points = $('.slider__item');
-const pointsPositions = [];
+$(document).ready(() => {
+	const pointer = $('.slider__pointer');
+	const slider = $('.slider');
+	const sliderLeftOffset = slider.offset().left;
+	const points = $('.slider__item');
+	const pointsPositions = [];
+	let currentPos = 0;
+	let dragging = false;
+	let currentIndex = 0;
 
-points.each((i, el) => {
-	pointsPositions.push($(el).offset().left - sliderLeftOffset);
-});
-
-pointsPositions[pointsPositions.length - 1] = slider.width();
-
-console.log(pointsPositions);
-
-pointer.mousedown(() => {
-	currentPos = pointer.position().left;
-	$('.wrapper').css({
-		'-webkit-user-select': 'none',
-		'-moz-user-select': 'none',
-		'-ms-user-select': 'none'
+	points.each((i, el) => {
+		pointsPositions.push($(el).position().left);
 	});
-	dragging = true;
-});
 
-$('.wrapper')
-	.mousemove(e => {
-		if (dragging) {
-			currentPos = e.pageX - sliderLeftOffset;
-			pointer.css({
-				left: `${currentPos}px`
-			});
-		}
-		if (currentPos < 0) {
-			currentPos = 0;
-			pointer.css({
-				left: `${currentPos}px`
-			});
-		}
-		if (currentPos > 770) {
-			currentPos = slider.width();
-			pointer.css({
-				left: `${currentPos}px`
-			});
-		}
-	})
-	.mouseup(() => {
-		dragging = false;
-		console.log(currentPos);
+	pointsPositions[pointsPositions.length - 1] = slider.width();
 
-		$.each(pointsPositions, i => {
-			if (
-				currentPos <= pointsPositions[i + 1] &&
-				currentPos >= pointsPositions[i]
-			) {
-				if (
-					currentPos >=
-					(pointsPositions[i + 1] - pointsPositions[i]) / 2
-				) {
-					currentPos = pointsPositions[i + 1];
-				}else {
-					currentPos = pointsPositions[i];
-				}
-			}
+	function slide(toPos) {
+		currentPos = toPos;
+		pointer.css({
+			left: `${currentPos}px`
 		});
+	}
+
+	slide(pointsPositions[pointsPositions.length - 1]);
+
+	pointer.mousedown(() => {
+		currentPos = pointer.position().left;
 		$('.wrapper').css({
-			'-webkit-user-select': '',
-			'-moz-user-select': '',
-			'-ms-user-select': ''
+			'-webkit-user-select': 'none',
+			'-moz-user-select': 'none',
+			'-ms-user-select': 'none'
 		});
+		dragging = true;
 	});
+
+	$('.wrapper')
+		.mousemove(e => {
+			if (dragging) {
+				slide(e.pageX - sliderLeftOffset);
+			}
+			if (currentPos < 0) {
+				slide(0);
+			}
+			if (currentPos > 770) {
+				slide(slider.width());
+			}
+		})
+		.mouseup(() => {
+			dragging = false;
+			$.each(pointsPositions, i => {
+				if (
+					currentPos <= pointsPositions[i + 1] &&
+					currentPos >= pointsPositions[i]
+				) {
+					if (
+						currentPos >=
+						pointsPositions[i] +
+							(pointsPositions[i + 1] - pointsPositions[i]) / 2
+					) {
+						currentIndex = i + 1;
+					}else {
+						currentIndex = i;
+					}
+				}
+			});
+			slide(pointsPositions[currentIndex]);
+			$('.wrapper').css({
+				'-webkit-user-select': '',
+				'-moz-user-select': '',
+				'-ms-user-select': ''
+			});
+		});
+});

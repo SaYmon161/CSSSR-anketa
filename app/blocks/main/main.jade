@@ -2,7 +2,7 @@ include ../info-row/info-row
 include ../skill/skill
 include ../slider/slider
 include ../plan/plan
-include ../textarea/textarea
+include ../about/about
 include ../date/date
 
 - var	info = [{name: 'Полное ФИО', value: 'Марат Фаридович Сайфутдинов'},	{name: 'Год рождения', value: '1987'},	{name: 'Место жительства',	value: 'г.Ростов-на-Дону, Россия'},	{name: 'Скайп',	value: 'saymon.01'}, {name: 'Почта', value: 'mfsayfutdinov@gmail.com'}]
@@ -35,10 +35,10 @@ mixin main()
 				h3.main__subtitle Расскажите о себе словами
 				p.main__desc Напишите пару предложений, чем вас привлекла наша вакансия и чего вы ожидаете от работы в CSSSR.
 					| Кстати, будет здорово, если при нехватке места для текста строки будут добавляться автоматически.
-				+textarea(rows="3")
+				+about
 			.main__plans
 				h3.main__subtitle Какие у вас планы на будущее?
-				p.main__desc Этот ответ ни на что не повлияет. Не беда, если в будущем ваши планы поменяются.
+				p.main__desc.main__desc--less-margin Этот ответ ни на что не повлияет. Не беда, если в будущем ваши планы поменяются.
 				ul.main__plans-list
 					each item in plans
 						li.main__plans-item
